@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Serverless app with Amazon Chime
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 30
+    MemorySize: 128
+Resources:
+  ChimeMeetingsAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ChimeMeetingsAccess
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'chime:CreateMeeting'
+              - 'chime:DeleteMeeting'
+              - 'chime:GetMeeting'
+              - 'chime:ListMeetings'
+              - 'chime:BatchCreateAttendee'
+              - 'chime:CreateAttendee'
+              - 'chime:DeleteAttendee'
+              - 'chime:GetAttendee'
+              - 'chime:ListAttendees'
+            Resource: '*'
+      Roles:
+        - Ref: MeetingJoinLambdaRole
+        - Ref: MeetingEndLambdaRole
+  MeetingJoinLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers.joinToMeeting
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /join
+            Method: POST
+  MeetingEndLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers.endMeeting
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /end
+            Method: POST
+Outputs:
+  ApiURL:
+    Description: "API endpoint URL for Prod environment"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

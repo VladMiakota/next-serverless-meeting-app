@@ -12,6 +12,7 @@ import axiosConfig from "../api/axiosConfig";
 import { v4 as uuidv4 } from "uuid";
 import AppControlBar from "../components/AppControlBar";
 import AppModal from "../components/AppModal";
+import styles from "../styles/styles";
 
 const Index: NextPage = () => {
     const meetingManager = useMeetingManager()
@@ -51,7 +52,7 @@ const Index: NextPage = () => {
             onCloseModal()
             const response = await axiosConfig.post(connectUrl);
             const {attendee, meeting} = response.data
-            setMeetingId(enteredMeetingId ? enteredMeetingId : meeting.Meeting.MeetingId)
+            setMeetingId(enteredMeetingId || meeting.Meeting.MeetingId)
             const meetingSessionConfiguration = new MeetingSessionConfiguration(meeting.Meeting, attendee.Attendee)
 
             await meetingManager.join(meetingSessionConfiguration)
@@ -75,13 +76,13 @@ const Index: NextPage = () => {
     }
 
     const microphoneButtonProps = {
-        icon: muted ? <Microphone muted /> : <Microphone />,
+        icon: <Microphone muted={muted} />,
         onClick: muteMicrophone,
         label: muted ? 'Unmute': 'Mute'
     };
 
     const cameraButtonProps = {
-        icon: cameraActive ? <Camera /> : <Camera disabled />,
+        icon: <Camera disabled={!cameraActive} />,
         onClick: toggleCamera,
         label: 'Camera'
     };
@@ -93,7 +94,7 @@ const Index: NextPage = () => {
 
   return (
       <div>
-          <div style={{ width: '100vw', height: '90vh' }}>
+          <div style={styles.videoGridStyles}>
               <VideoTileGrid/>
               <AppControlBar
                   layout='bottom'

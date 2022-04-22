@@ -1,6 +1,7 @@
 require('dotenv').config();
 const {parseJsonSafe, json} = require('./helpers/helpers')
 const {getChimeMeeting, createChimeAttendee, deleteChimeMeeting} = require('./services/chime.service')
+const logService = require('./services/log.service')
 
 exports.joinToMeeting = async (event, context, callback) => {
   try {
@@ -13,7 +14,8 @@ exports.joinToMeeting = async (event, context, callback) => {
       attendee,
     });
   } catch (e) {
-    console.log(e)
+    logService.error(e.message)
+    return json(e, 500)
   }
 };
 

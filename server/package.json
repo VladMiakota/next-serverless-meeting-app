@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "add": "^2.0.6",
+    "aws-sdk": "^2.1117.0",
+    "dotenv": "^16.0.0",
+    "serverless-aws-static-file-handler": "^3.1.7",
+    "uuid": "^8.3.2",
+    "yarn": "^1.22.18"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.25",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
+  }
+}
